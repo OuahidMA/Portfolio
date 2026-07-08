@@ -179,34 +179,87 @@ p {
                                  TITLE FLIP SETUP
 =============================================================================================*/
 
+/* Keeps "I'm a" and the flipping text glued to the same horizontal line */
+.hero-title-line {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 10px; /* Adjusts the spacing between "I'm a" and the rolling words */
+}
+
 .cont-flip {
     display: inline-block;
     position: relative;
-    min-width: 340px;
-    height: 1.2em;
-    vertical-align: bottom;
+    min-width: 420px;
+    height: 1em;
+    vertical-align: baseline;
+    perspective: 1000px;
 }
 
-.flip-fsd,
-.flip-cysec {
+/* The structural moving container representing the 3D Cube dimensions */
+.flip-cube {
     position: absolute;
     top: 0;
     left: 0;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    animation: rotateCube 9s cubic-bezier(0.76, 0, 0.24, 1) infinite;
+}
+
+/* Base class for all three text positions inside the 3D ecosystem */
+.flip-card {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     white-space: nowrap;
+    backface-visibility: hidden; /* Stops text flickering when spinning backwards */
 }
 
-.flip-fsd {
-    color: #65F527;
-    animation: flicker 4s infinite;
+/* Individual Color Assignment & Axis Spacing offsets */
+.card-fsd {
+    color: #006666; /* Deep Teal */
+    transform: rotateX(0deg) translateZ(20px);
 }
 
-.flip-cysec {
-    color: #dc2626;
-    animation: flicker 4s infinite;
-    animation-delay: 2s;
+.card-net {
+    color: #B30000; /* Crimson Red */
+    transform: rotateX(-120deg) translateZ(20px);
 }
 
+.card-web {
+    color: #B30000; /* Crimson Red */
+    transform: rotateX(-240deg) translateZ(20px);
+}
 
+/* 
+   Smooth 3D Axis Loop Animation 
+   Each item stays fixed for ~28% (~2.5s) and spins over ~5% (~0.5s)
+*/
+@keyframes rotateCube {
+    0%, 28% {
+        transform: rotateX(0deg);
+    }
+    33%, 61% {
+        transform: rotateX(120deg);
+    }
+    66%, 94% {
+        transform: rotateX(240deg);
+    }
+    100% {
+        transform: rotateX(360deg);
+    }
+}
+
+/* Responsive adjustment for small viewports to stop layout cracking */
+@media (max-width: 600px) {
+    .cont-flip {
+        display: block;
+        min-width: 100%;
+        margin-top: 0.5rem;
+    }
+}
 
 /* ==========================================================================================
                                  END OF TITLE FLIP SETUP 
